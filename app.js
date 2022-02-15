@@ -4,30 +4,13 @@ import {Weapon} from './weapon.js';
 import {Actor} from './actor.js';
 import {config} from './config.js';
 
-function attacks(source, target) {
-    let result = null;
-
-    if (source.roll_accuracy > target.roll_defense) {
-        result = `${source.name} hits ${target.name} for ${source.roll_damage} damage`;
-        target.health_current -= source.roll_damage;
-    } else if (source.roll_accuracy == target.roll_defense) {
-        const glancing_damage = Math.floor(source.roll_damage / 2);
-        result = `${source.name} glances ${target.name} for ${glancing_damage} damage`;
-        target.health_current -= glancing_damage;
-    } else{
-        result = `${source.name} misses ${target.name}`;
-    }
-
-    // console.log(result);
-}
-
 function simulate_battle() {
     let winner = null;
     let result = null;
     let round = 0;
-    // const mode = 'bobvsjim';
+    const mode = 'bobvsjim';
     // const mode = 'bobvsimp';
-    const mode = 'bobvsimps';
+    // const mode = 'bobvsimps';
 
     const bob = new Actor("Bob", 75);
     // bob.armor = new Armor("Nude", "nude", 2);
@@ -39,12 +22,12 @@ function simulate_battle() {
     // bob.weapon = new Weapon("Dagger", "dagger", 4, 4, 4);   // this is the default weapon
     // bob.weapon = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
     // bob.weapon = new Weapon("Poisoned Dagger", "dagger", 4, 6, 4);
-    bob.weapon = new Weapon("Short Sword", "sword", 4, 4, 6);
+    // bob.weapon = new Weapon("Short Sword", "sword", 4, 4, 6);
 
 
-    const jim = new Actor("Jim", 50);
+    const jim = new Actor("Jim", 75);
     // jim.weapon = new Weapon("Dagger", "dagger", 4, 4, 4);  // this is the default weapon
-    // jim.weapon = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
+    jim.weapon = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
     // jim.weapon = new Weapon("Poisoned Dagger", "dagger", 4, 6, 4);
 
     const impA = new Actor("imp A", 20);
@@ -65,16 +48,16 @@ function simulate_battle() {
             impA.rolls();
             bob.rolls();
 
-            attacks(impA, bob);
-            attacks(bob, impA);
+            impA.attack(bob);
+            bob.attack(impA);
         }
 
         if(bob.alive()) {
             result = `${bob.name} wins!`;
-            winner =  1;
+            winner =  'bob';
         } else {
             result = `${bob.name} loses!`;
-            winner = -1;
+            winner = 'lone imp';
         }
 
         result += ` Battle took ${round} rounds`;
@@ -95,26 +78,26 @@ function simulate_battle() {
                 impB.rolls();
                 bob.rolls();
 
-                attacks(impA, bob);
-                attacks(impB, bob);
-                attacks(bob, impA);
+                impA.attack(bob);
+                impB.attack(bob);
+                bob.attack(impA);
 
             } else {
-                if(impB.alive()) {
-                    impB.rolls();
-                    bob.rolls();
-                    attacks(impB, bob);
-                    attacks(bob, impB);
-                }
+                impB.rolls();
+                bob.rolls();
+
+                impB.attack(bob);
+                bob.attack(impB);
+
             }
         }
 
         if(bob.alive()) {
             result = `${bob.name} wins!`;
-            winner =  1;
+            winner =  'bob';
         } else {
             result = `${bob.name} loses!`;
-            winner = -1;
+            winner = 'imps';
         }
 
         result += ` Battle took ${round} rounds`;
@@ -133,23 +116,23 @@ function simulate_battle() {
             bob.rolls();
             jim.rolls();
 
-            attacks(bob, jim);
-            attacks(jim, bob);
+            bob.attack(jim);
+            jim.attack(bob);
         }
 
         if(bob.alive()) {
             result = `${bob.name} wins!`;
-            winner =  1;
+            winner =  bob.name;
         }
 
         if(jim.alive()) {
             result = `${jim.name} wins!`;
-            winner =  -1;
+            winner =  jim.name;
         }
 
         if(!bob.alive() && !jim.alive()) {
             result = "It's a tie!";
-            winner =  0;
+            winner =  'tie';
         }
 
         result += ` Battle took ${round} rounds`;
@@ -160,19 +143,34 @@ function simulate_battle() {
     }
 }
 
-let ties = 0, jim = 0, bob = 0;
+// let ties = 0, jim = 0, bob = 0;
+
+let battle_results = {};
+
 for(let i = 0; i < 1000; i++) {
+
     const result = simulate_battle();
-    if(result == 0) {
-        ties++;
-    } else if(result == 1) {
-        bob++;
+
+    if (result in battle_results) {
+        battle_results[result]++;
     } else {
-        jim++;
+        battle_results[result] = 1;
     }
+
+    // if(result == 0) {
+    //     ties++;
+    // } else if(result == 1) {
+    //     bob++;
+    // } else {
+    //     jim++;
+    // }
 }
 
-console.log(`Bob's wins:   ${bob}`);
-console.log(`Bob's losses: ${jim}`);
-console.log(`Ties:         ${ties}`);
+for(let result in battle_results) {
+    console.log(`${result}: ${battle_results[result]}`);
+}
+
+// console.log(`Bob's wins:   ${bob}`);
+// console.log(`Bob's losses: ${jim}`);
+// console.log(`Ties:         ${ties}`);
 

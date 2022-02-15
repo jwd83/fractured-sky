@@ -1,5 +1,5 @@
 const config = {
-    debug_level: 1,
+    debug_level: 0,
 }
 
 export {config};

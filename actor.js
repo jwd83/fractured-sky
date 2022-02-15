@@ -1,3 +1,4 @@
+import {config} from './config.js';
 import {roll} from './dice.js';
 import {Armor} from './armor.js';
 import {Weapon} from './weapon.js';
@@ -26,6 +27,23 @@ class Actor {
         this.roll_damage = roll(this.weapon.damage) + this.weapon.base_damage;
 
         // console.log(`${this.name} rolled accuracy ${this.roll_accuracy}, defense ${this.roll_defense}, damage ${this.roll_damage}`);
+    }
+
+    attack(target) {
+        let result = null;
+
+        if (this.roll_accuracy > target.roll_defense) {
+            result = `${this.name} hits ${target.name} for ${this.roll_damage} damage`;
+            target.health_current -= this.roll_damage;
+        } else if (this.roll_accuracy == target.roll_defense) {
+            const glancing_damage = Math.floor(this.roll_damage / 2);
+            result = `${this.name} glances ${target.name} for ${glancing_damage} damage`;
+            target.health_current -= glancing_damage;
+        } else{
+            result = `${this.name} misses ${target.name}`;
+        }
+
+        if(config.debug_level >= 1)  console.log(result);
     }
 }
 
