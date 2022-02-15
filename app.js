@@ -12,23 +12,64 @@ function simulate_battle() {
     // const mode = 'bobvsimp';
     // const mode = 'bobvsimps';
 
-    const bob = new Actor("Bob", 75);
+    const bob = new Actor("Bob", 500);
+
     // bob.armor = new Armor("Nude", "nude", 2);
-    // bob.armor = new Armor("Cloth", "cloth", 4);
+    // bob.armor = new Armor("Cloth", "cloth", 4);                              // default armor
     // bob.armor = new Armor("Leather", "leather", 6);
     // bob.armor = new Armor("Chain", "chain", 8);
     // bob.armor = new Armor("Plate", "plate", 10);
 
-    // bob.weapon = new Weapon("Dagger", "dagger", 4, 4, 4);   // this is the default weapon
+    // bob.weapon = new Weapon("Dagger", "dagger", 4, 4, 4);                    // default weapon
     // bob.weapon = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
     // bob.weapon = new Weapon("Poisoned Dagger", "dagger", 4, 6, 4);
+    // bob.weapon = new Weapon("Balanced Poisoned Dagger", "dagger", 6, 6, 4);
     // bob.weapon = new Weapon("Short Sword", "sword", 4, 4, 6);
+    // bob.weapon = new Weapon("Rapier", "sword", 6, 4, 6);
+    // bob.weapon = new Weapon("Estoc", "sword", 8, 6, 6);
+    // bob.weapon = new Weapon("Muramasa", "sword", 10, 10, 10);
+    bob.weapon = new Weapon("Masamune", "sword", 12, 12, 12);
+    // bob.weapon = new Weapon("Iron Great Axe", "axe", 6, 8, 8);
+    // bob.weapon = new Weapon("Odachi", "sword", 8, 4, 10);
+    // bob.weapon = new Weapon("Zhweihander", "sword", 10, 10, 14);
+    // bob.weapon = new Weapon("Goliath Great Hammer", "mace", 10, 12, 16);
+    // bob.weapon = new Weapon("Crystal Greatsword", "sword", 12, 20, 20);
+
+    // bob.offhand = new Weapon("Dagger", "dagger", 4, 4, 4);                    // default weapon
+    // bob.offhand = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
+    // bob.offhand = new Weapon("Poisoned Dagger", "dagger", 4, 6, 4);
+    // bob.offhand = new Weapon("Balanced Poisoned Dagger", "dagger", 6, 6, 4);
+    // bob.offhand = new Weapon("Short Sword", "sword", 4, 4, 6);
+    // bob.offhand = new Weapon("Rapier", "sword", 6, 4, 6);
+    // bob.offhand = new Weapon("Estoc", "sword", 8, 6, 6);
+    bob.offhand = new Weapon("Muramasa", "sword", 10, 10, 10);
+    // bob.offhand = new Weapon("Masamune", "sword", 12, 12, 12);
 
 
-    const jim = new Actor("Jim", 75);
-    // jim.weapon = new Weapon("Dagger", "dagger", 4, 4, 4);  // this is the default weapon
-    jim.weapon = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
+    const jim = new Actor("Jim", 500);
+
+    // jim.armor = new Armor("Nude", "nude", 2);
+    // jim.armor = new Armor("Cloth", "cloth", 4);                              // default armor
+    // jim.armor = new Armor("Leather", "leather", 6);
+    // jim.armor = new Armor("Chain", "chain", 8);
+    // jim.armor = new Armor("Plate", "plate", 10);
+
+    // jim.weapon = new Weapon("Dagger", "dagger", 4, 4, 4);   // default weapon
+    // jim.weapon = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
     // jim.weapon = new Weapon("Poisoned Dagger", "dagger", 4, 6, 4);
+    // jim.weapon = new Weapon("Balanced Poisoned Dagger", "dagger", 6, 6, 4);
+    // jim.weapon = new Weapon("Short Sword", "sword", 4, 4, 6);
+    // jim.weapon = new Weapon("Iron Great Axe", "axe", 6, 8, 8);
+    // jim.weapon = new Weapon("Odachi", "sword", 8, 4, 10);
+    // jim.weapon = new Weapon("Zhweihander", "sword", 10, 10, 14);
+    // jim.weapon = new Weapon("Goliath Great Hammer", "mace", 10, 12, 16);
+    jim.weapon = new Weapon("Crystal Greatsword", "sword", 12, 20, 20);
+
+    // jim.offhand = new Weapon("Dagger", "dagger", 4, 4, 4);                    // default weapon
+    // jim.offhand = new Weapon("Balanced Dagger", "dagger", 6, 4, 4);
+    // jim.offhand = new Weapon("Poisoned Dagger", "dagger", 4, 6, 4);
+    // jim.offhand = new Weapon("Balanced Poisoned Dagger", "dagger", 6, 6, 4);
+    // jim.offhand = new Weapon("Short Sword", "sword", 4, 4, 6);
 
     const impA = new Actor("imp A", 20);
     // impA.weapon = new Weapon("Dagger", "dagger", 4, 4, 4);  // this is the default weapon
@@ -143,11 +184,9 @@ function simulate_battle() {
     }
 }
 
-// let ties = 0, jim = 0, bob = 0;
-
 let battle_results = {};
 
-for(let i = 0; i < 1000; i++) {
+for(let i = 0; i < 10000; i++) {
 
     const result = simulate_battle();
 
@@ -156,21 +195,8 @@ for(let i = 0; i < 1000; i++) {
     } else {
         battle_results[result] = 1;
     }
-
-    // if(result == 0) {
-    //     ties++;
-    // } else if(result == 1) {
-    //     bob++;
-    // } else {
-    //     jim++;
-    // }
 }
 
 for(let result in battle_results) {
     console.log(`${result}: ${battle_results[result]}`);
 }
-
-// console.log(`Bob's wins:   ${bob}`);
-// console.log(`Bob's losses: ${jim}`);
-// console.log(`Ties:         ${ties}`);
-
