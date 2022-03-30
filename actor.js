@@ -17,7 +17,6 @@ class Actor {
         this.roll_damage = 0;
         this.roll_oh_accuracy = 0;
         this.roll_oh_damage = 0;
-
     }
 
     alive() {
@@ -29,8 +28,9 @@ class Actor {
         this.roll_defense = roll(this.armor.defense);
         this.roll_damage = roll(this.weapon.damage) + this.weapon.base_damage;
 
-        // check if offhand is a weapon
+        // check if an offhand is present
         if(this.offhand != null) {
+            // check if offhand is a weapon
             if(this.offhand.type !== 'shield') {
                 // offhand gets -1 accuracy
                 this.roll_oh_accuracy = roll(this.offhand.accuracy - 1);
